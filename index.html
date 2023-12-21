@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html>
 <head>
     <title>オート文字列カウンター</title>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <style>
-        /* テキストエリアと文字表示のスタイルを調整 */
-        #text_area {
-            font-size: 20px; /* テキストエリアの文字サイズ */
-            width: 400px; /* テキストエリアの幅 */
-            height: 200px; /* テキストエリアの高さ */
-            padding: 10px; /* テキストエリアの内側の余白 */
+        body {
+            text-align: center; /* テキストを中央揃え */
         }
-        #length_display {
-            font-size: 24px; /* 文字表示部分の文字サイズ */
+        #text_area {
+            font-size: 20px;
+            width: 600px;
+            height: 400px;
+            padding: 10px;
+            margin: 0 auto; /* テキストエリアを中央に配置 */
+        }
+        #line_count_display, #length_display, #length_display_no_spaces {
+            font-size: 24px;
+            margin: 10px 0; /* 上下の余白 */
         }
     </style>
 </head>
@@ -21,13 +23,19 @@
     <py-script>
         from js import document
 
-        def update_length():
+        def update_counts():
             text_input = document.getElementById('text_area').value
-            length = len(text_input)
-            document.getElementById('length_display').innerText = f"Length: {length}"
+            lines = text_input.split("\n")
+            line_count = len(lines)
+            length_with_spaces = len(text_input.replace("\n", ""))
+            length_without_spaces = len(text_input.replace(" ", "").replace("\n", ""))
+            document.getElementById('line_count_display').innerText =       f"行数　　　　　　　　　： {line_count}"
+            document.getElementById('length_display').innerText =           f"文字数（空白含む）　　： {length_with_spaces}"
+            document.getElementById('length_display_no_spaces').innerText = f"文字数（空白含まない）： {length_without_spaces}"
     </py-script>
 
-    <textarea id="text_area" py-input="update_length()" py-change="update_length()"></textarea>
-    <p id="length_display">Length: 0</p>
+    <textarea id="text_area" py-input="update_counts()" py-change="update_counts()"></textarea>
+    <p id="length_display">文字数（空白含む）　　： 0</p>
+    <p id="length_display_no_spaces">文字数（空白含まない）： 0</p>
+    <p id="line_count_display">行数　　　　　　　　　：  0</p>
 </body>
-</html>
